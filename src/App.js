@@ -1,31 +1,31 @@
 import logo from './logo.svg';
 import './App.css';
 import React, { Component } from 'react';
-const API = 'https://hn.algolia.com/api/v1/search?query=';
-const DEFAULT_QUERY = 'redux';
+const query = 'harry potter';
+const API = 'https://www.googleapis.com/books/v1/volumes?q=flowers+inauthor:keyes&key=yourAPIKey';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      hits: [],
+      books: [],
     };
   }
 
   componentDidMount() {
-    fetch(API + DEFAULT_QUERY)
+    fetch(API)
       .then(response => response.json())
-      .then(data => this.setState({ hits: data.hits }));
+      .then(data => this.setState({ hits: data.books }));
   }
   render () {
-    const { hits } = this.state;
+    const { books } = this.state;
     return (
-      <div class="App">
+      <div className="App">
       <ul>
-        {hits.map(hit =>
-          <li key={hit.objectID}>
-            <a href={hit.url}>{hit.title}</a>
+        {books.map(q =>
+          <li key={q.intitle}>
+            <a href={q.intitle}></a>
           </li>
         )}
       </ul>
