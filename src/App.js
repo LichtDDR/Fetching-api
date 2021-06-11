@@ -1,39 +1,37 @@
 import logo from './logo.svg';
 import './App.css';
-import { Component } from 'react';
+import React, { Component } from 'react';
+const API = 'https://hn.algolia.com/api/v1/search?query=';
+const DEFAULT_QUERY = 'redux';
 
-class App extends Component {
+class App extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      data: null,
+      hits: [],
     };
   }
 
-  componentDidMount () {
-    fetch('https://api.mydomain.com')
-    .then(response => response.json)
-    .then(data => this.setState({ data }))
+  componentDidMount() {
+    fetch(API + DEFAULT_QUERY)
+      .then(response => response.json())
+      .then(data => this.setState({ hits: data.hits }));
   }
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  render () {
+    const { hits } = this.state;
+    return (
+      <div class="App">
+      <ul>
+        {hits.map(hit =>
+          <li key={hit.objectID}>
+            <a href={hit.url}>{hit.title}</a>
+          </li>
+        )}
+      </ul>
+      </div>
+    );
+  }
 }
 
 export default App;
