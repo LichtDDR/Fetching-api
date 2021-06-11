@@ -1,37 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
-import React, { Component } from 'react';
-const query = 'harry potter';
-const API = 'https://www.googleapis.com/books/v1/volumes?q=flowers+inauthor:keyes&key=yourAPIKey';
-
-class App extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      books: [],
-    };
-  }
-
-  componentDidMount() {
-    fetch(API)
-      .then(response => response.json())
-      .then(data => this.setState({ hits: data.books }));
-  }
-  render () {
-    const { books } = this.state;
-    return (
-      <div className="App">
-      <ul>
-        {books.map(q =>
-          <li key={q.intitle}>
-            <a href={q.intitle}></a>
-          </li>
-        )}
-      </ul>
-      </div>
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+const query = "harry potter";
+ 
+function App() {
+  const [data, setData] = useState({ items: [], volumeInfo: "", id: ""});
+ 
+  useEffect(async () => {
+    const result = await axios(
+      `https://www.googleapis.com/books/v1/volumes?q=${query}`,
     );
-  }
+ 
+    setData(result.data);
+  });
+ 
+  return (
+    <ul>
+      {data.items.map(book => (
+        <li>
+          <a key={book.items}>{book.volumeInfo.title}</a>
+          <a key={book.items}>{book.id}</a>
+        </li>
+      ))}
+    </ul>
+  );
 }
-
+ 
 export default App;
