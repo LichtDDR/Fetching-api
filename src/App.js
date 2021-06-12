@@ -4,14 +4,16 @@ const query = "harry potter";
  
 function App() {
   const [data, setData] = useState({ items: [], volumeInfo: "", id: ""});
- 
-  useEffect(async () => {
-    const result = await axios(
-      `https://www.googleapis.com/books/v1/volumes?q=${query}`,
-    );
- 
-    setData(result.data);
-  });
+  
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await axios(
+        `https://www.googleapis.com/books/v1/volumes?q=${query}`,
+      );
+      setData(result.data);
+    };
+    fetchData();
+  }, []);
  
   return (
     <ul>
